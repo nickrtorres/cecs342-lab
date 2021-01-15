@@ -1,0 +1,34 @@
+<program>   ::= <stmt_list>
+
+<stmt_list> ::= <stmt> SEMICOLON <stmt_list>
+<stmt_list> ::= <stmt> SEMICOLON
+
+<stmt>      ::= <let>
+<stmt>      ::= <print>
+
+<let>       ::= LET IDENTIFIER EQ <expr>
+
+<expr>      ::= <expr> PLUS <expr>
+<expr>      ::= <expr> MINUS <expr>
+<expr>      ::= NUM
+<expr>      ::= IDENTIFIER
+
+<print>     ::= PRINT IDENTIFIER
+
+EQ: =
+IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]+
+LET: let
+MINUS: -
+NUM: [0-9]+
+PRINT: print
+PLUS: +
+SEMICOLON: ;
+
+
+; let x = 1 + 2;
+; <program> ::= <stmt_list>
+;           ::= <stmt>;
+;           ::= <let>;
+;           ::= let x = <expr>;
+;           ::= let x = <expr> + <expr>;
+;           ::= let x = 1 + 2;
