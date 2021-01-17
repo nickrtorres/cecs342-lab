@@ -1,9 +1,15 @@
 ## An overview of (front-end) compiler design
 
-_Classical_ compilers split into two phases: front and back end [1].
-Furthermore, each unit within a given phase provides an interface -- that is, a
-contract -- of what clients can expect on the other side. A typical front-end
-may look something like this [2]:
+NB: This overview roughly correlates to chapter 1.6 from *Programming Language
+Pragmatics*. Ancillary references are listed in the [references section] at the
+bottom of this file.
+
+---
+
+Compilers work in a number of phases (often called passes) that transform a
+source text program into machine instructions that can be executed by a target
+CPU. Each phase is an abstraction that provides an interface (or contract) to
+the next phase. An overview of these phases is depicted below.
 
 ```
                              | Source program (e.g. main.cpp)
@@ -15,7 +21,7 @@ may look something like this [2]:
                 |                          |
                 +--------------------------+
                              |
-                             | Token stream (e.g. std::vector<Token>)
+                             | Token stream
                              V
                 +--------------------------+
                 |                          |
@@ -47,7 +53,15 @@ may look something like this [2]:
 
 ```
 
-NB
-[1]: Modern compilers are a bit different: https://youtu.be/wSdV1M7n4gQ
+This overview will focus on the phases of the compiler work to understand (and
+detect errors in) the *syntax* and *semantics* of a compiler. These phases are:
+*lexical analysis*, *parsing*, and *semantic analysis* -- together they make up
+the front end of a typical compiler.
+
+## Lexical Analysis
+
+
+
+## References
 [2]: See for yourself! Rust's original compiler was written in OCaml and
 followed this form pretty closely: https://github.com/rust-lang/rust/tree/ef75860a0a72f79f97216f8aaa5b388d98da6480/src/boot/fe
