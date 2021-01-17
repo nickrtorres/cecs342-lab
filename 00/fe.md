@@ -112,9 +112,9 @@ fragment of source code.
 let ~ = 100 ;;
 ```
 
-If the character '~' does not exist in our language, then the lexer can return
+If the character `~` does not exist in our language, then the lexer can return
 an error that indicates that there is a lexical program with the program --
-namely, the existence of the '~' character in the program.
+namely, the existence of the `~` character in the program.
 
 ## References
 [2]: See for yourself! Rust's original compiler was written in OCaml and
