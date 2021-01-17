@@ -102,6 +102,20 @@ type Token =
   // ...
 ```
 
+### Errors
+
+A lexer will uncover *lexical errors* in a program. Lexical errors manifest in
+*lexemes* that do not exist in the source language. Consider the following
+fragment of source code.
+
+```
+let ~ = 100 ;;
+```
+
+If the character '~' does not exist in our language, then the lexer can return
+an error that indicates that there is a lexical program with the program --
+namely, the existence of the '~' character in the program.
+
 ## References
 [2]: See for yourself! Rust's original compiler was written in OCaml and
 followed this form pretty closely: https://github.com/rust-lang/rust/tree/ef75860a0a72f79f97216f8aaa5b388d98da6480/src/boot/fe
