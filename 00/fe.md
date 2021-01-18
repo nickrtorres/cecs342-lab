@@ -208,10 +208,11 @@ This requires a new phase: semantic analysis.
 
 ## Example
 
-An example lexer and parser for Arithmos is provided in the [example/]
-directory.  The implementation is about 100 lines and does not perform any
-semantic analysis. Additionally, the input stream is split on whitespace, so
-you'll need to add space around lexemes (e.g. `let x = 42 ; print x` instead of
+An example [lexer] and [parser] for Arithmos -- the language described above --
+is provided in the [example/] directory.  The implementation is about 100 lines
+and does not perform any semantic analysis. Additionally, the input stream is
+split on whitespace, so you'll need to add space around lexemes (e.g. `let x =
+42 ; print x` instead of
 `let x = 42; print x`).
 
 @TODO
@@ -240,3 +241,5 @@ NB: You can run the program by typing `dotnet run` in a shell.
 [example/]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 [lexeme]: https://en.wikipedia.org/wiki/Lexical_analysis#Lexeme
+[lexer]: https://github.com/nickrtorres/cecs342-lab/blob/81396af823ed2ab19e5114476ae79f21b3fdc973/00/example/Arithmos.fs#L22
+[parser]: https://github.com/nickrtorres/cecs342-lab/blob/81396af823ed2ab19e5114476ae79f21b3fdc973/00/example/Arithmos.fs#L58
