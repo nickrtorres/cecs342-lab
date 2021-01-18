@@ -3,6 +3,7 @@ open System.Text.RegularExpressions
 
 exception LexicalException of string
 exception SyntaxException of string
+exception SemanticException of string
 
 type Token =
     | Eq
@@ -97,6 +98,25 @@ let parse tokens =
 
     program tokens
 
+let semant ast =
+    let rec semant' ast sym =
+        let semantStmt s (sym: string Set) =
+            match s with
+            | LetStmt (iden, _) -> Set.add iden sym
+            | PrintStmt exp ->
+                match exp with
+                | Identifier iden when not <| Set.contains iden sym ->
+                    raise (SemanticException(sprintf "undefined symbol '%s'" iden))
+                | _ -> sym
+
+        match ast with
+        | SingleStmt s -> semantStmt s sym
+        | CompoundStmt (s, tl) -> semant' tl (semantStmt s sym)
+
+    let () = ignore (semant' ast Set.empty)
+    ast
+
+
 [<EntryPoint>]
 let main argv =
     let ok = 0
@@ -105,7 +125,7 @@ let main argv =
     match Array.length argv with
     | 1 ->
         try
-            printfn "%A" (Array.head argv |> lex |> parse)
+            printfn "%A" (Array.head argv |> lex |> parse |> semant)
             ok
         with
         | LexicalException e ->
@@ -113,6 +133,9 @@ let main argv =
             err
         | SyntaxException e ->
             eprintfn "Syntax error at: %s" e
+            err
+        | SemanticException e ->
+            eprintfn "Semantic error at: %s" e
             err
     | _ ->
         eprintfn "usage: Arithmos '<program>'"

@@ -201,18 +201,17 @@ This requires a new phase: semantic analysis.
 
 ## Example
 
-An example [lexer] and [parser] for Arithmos -- the language described above --
-is provided in the [example/] directory.  The implementation is about 100 lines
-and does not perform any semantic analysis. Additionally, the input stream is
-split on whitespace, so you'll need to add space around lexemes (e.g. `let x =
-42 ; print x` instead of `let x = 42; print x`).
+An example [lexer], [parser], and [semantic analyzer][semant] for Arithmos --
+the language described above -- is provided in the [example/] directory.  The
+implementation is about 150 lines of F#.
 
 Some possible exercises:
 - Try updating the lexer to support statements without a space between the
   semicolon (e.g. `let x = 42; print x` instead of `let x = 42 ; print x`).
 - Add a semantic analyzer that stores bindings in a symbol table and raises a
   `SemanticException` if a binding is referenced before it is defined.
-- @TODO
+    - @TODO maybe remove the existing semantic analyzer so this is possible.
+- @TODO add more
 
 ## Final remarks, additional resources, and other cool stuff
 
@@ -235,4 +234,5 @@ Some possible exercises:
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 [lexeme]: https://en.wikipedia.org/wiki/Lexical_analysis#Lexeme
 [lexer]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Arithmos.fs#L22
-[parser]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Arithmos.fs#L55
+[parser]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Arithmos.fs#L55 
+[semant]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Arithmos.fs#L101
