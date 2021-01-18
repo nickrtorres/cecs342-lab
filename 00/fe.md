@@ -159,7 +159,7 @@ In this example, <program> is the start symbol. The nonterminals are
 { <program>, <stmt_list>, <stmt>, <print_stmt>, <let_stmt>, <expr> }. The
 terminals are { ';', print, let, identifier, number }.
 
-## Derivations and errors
+### Derivations and errors
 
 Consider the following Arithmos statement: `let x = 42`. Expanding this
 statement with the grammar above looks like this.
