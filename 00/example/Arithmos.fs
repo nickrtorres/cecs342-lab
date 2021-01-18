@@ -75,7 +75,7 @@ let parse tokens =
             let _, afterSemi = eat tl Semicolon
             CompoundStmt(s, stmtList afterSemi)
 
-    and stmt (tokens: Token list) =
+    and stmt tokens =
         match tokens with
         | Let :: tl -> letStmt tl
         | Print :: tl -> printStmt tl
