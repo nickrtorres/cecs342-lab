@@ -61,7 +61,10 @@ let parse tokens =
         | (e, a) -> e = a
 
     let eat tokens exp =
-        if (isMatch (List.head tokens) exp) then (List.head tokens, List.tail tokens) else failwith "unexpected token!"
+        match tokens with
+        | hd :: tl when isMatch exp hd -> (hd, tl)
+        | hd :: _ -> raise (SyntaxException(sprintf "unexpected token: expected: '%A'; got: '%A'" exp hd))
+        | [] -> raise (SyntaxException(sprintf "unexpected eof"))
 
     let rec program tokens = stmtList tokens
 
@@ -69,32 +72,30 @@ let parse tokens =
         match stmt tokens with
         | (s, []) -> SingleStmt s
         | (s, tl) ->
-            let (_, afterSemi) = eat tl Semicolon
+            let _, afterSemi = eat tl Semicolon
             CompoundStmt(s, stmtList afterSemi)
 
-    and stmt tokens =
-        match List.head tokens with
-        | Let -> letStmt tokens
-        | Print -> printStmt tokens
-        | t -> raise (SyntaxException(sprintf "Invalid start of statement: '%A'" (t)))
+    and stmt (tokens: Token list) =
+        match tokens with
+        | Let :: tl -> letStmt tl
+        | Print :: tl -> printStmt tl
+        | t -> raise (SyntaxException(sprintf "invalid start of statement: '%A'" (t)))
 
     and expression tokens =
-        match List.head tokens with
-        | Token.Num n -> (Num n, List.tail tokens)
-        | Token.Identifier s -> (Identifier s, List.tail tokens)
-        | t -> raise (SyntaxException(sprintf "Invalid start of expression: '%A'" (t)))
+        match tokens with
+        | Token.Num n :: tl -> (Num n, tl)
+        | Token.Identifier s :: tl -> (Identifier s, tl)
+        | t -> raise (SyntaxException(sprintf "invalid start of expression: '%A'" (t)))
 
     and letStmt tokens =
-        let _, afterLet = eat tokens Let
-        let iden, afterIden = eat afterLet (Token.Identifier "")
+        let iden, afterIden = eat tokens (Token.Identifier "")
         let _, afterEq = eat afterIden Eq
-        let exp, afterExpr = expression afterEq
-        LetStmt(identifierFromToken iden, exp), afterExpr
+        let expr, afterExpr = expression afterEq
+        LetStmt(identifierFromToken iden, expr), afterExpr
 
     and printStmt tokens =
-        let _, afterPrint = eat tokens Print
-        let exp, afterExpr = expression afterPrint
-        PrintStmt(exp), afterExpr
+        let expr, afterExpr = expression tokens
+        PrintStmt(expr), afterExpr
 
     program tokens
 
@@ -103,10 +104,10 @@ let semant ast =
         let semantStmt s (sym: string Set) =
             match s with
             | LetStmt (iden, _) -> Set.add iden sym
-            | PrintStmt exp ->
-                match exp with
+            | PrintStmt expr ->
+                match expr with
                 | Identifier iden when not <| Set.contains iden sym ->
-                    raise (SemanticException(sprintf "Undefined symbol: '%s'" iden))
+                    raise (SemanticException(sprintf "undefined symbol: '%s'" iden))
                 | _ -> sym
 
         match ast with
