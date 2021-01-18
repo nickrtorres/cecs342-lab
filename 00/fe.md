@@ -234,5 +234,5 @@ Some possible exercises:
 [example/]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 [lexeme]: https://en.wikipedia.org/wiki/Lexical_analysis#Lexeme
-[lexer]: https://github.com/nickrtorres/cecs342-lab/blob/81396af823ed2ab19e5114476ae79f21b3fdc973/00/example/Arithmos.fs#L22
-[parser]: https://github.com/nickrtorres/cecs342-lab/blob/81396af823ed2ab19e5114476ae79f21b3fdc973/00/example/Arithmos.fs#L58
+[lexer]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Arithmos.fs#L22
+[parser]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Arithmos.fs#L55
