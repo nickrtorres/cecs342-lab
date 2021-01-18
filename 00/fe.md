@@ -115,8 +115,8 @@ let ~ = 100 ;;
 ```
 
 If the character `~` does not exist in our language, then the lexer can return
-an error that indicates that there is a lexical program with the program --
-namely, the existence of the `~` character in the program.
+an error that indicates that there is a lexical error in the program -- namely,
+the existence of the `~` character in the program.
 
 ## Syntax Analysis
 
@@ -159,6 +159,8 @@ In this example, <program> is the start symbol. The nonterminals are
 { <program>, <stmt_list>, <stmt>, <print_stmt>, <let_stmt>, <expr> }. The
 terminals are { ';', print, let, identifier, number }.
 
+## Derivations and errors
+
 Consider the following Arithmos statement: `let x = 42`. Expanding this
 statement with the grammar above looks like this.
 
@@ -170,7 +172,7 @@ statement with the grammar above looks like this.
               ::=  let x = 42
 ```
 The expansion of a statement from a context-free grammar is called a
-*derivation*.  From this derivation, we can conclude that the statement `let x
+*[derivation]*.  From this derivation, we can conclude that the statement `let x
 = 42` is valid in the Arithmos language.
 
 Alternatively, consider the statement: `var x = 42`. Expanding this statement
@@ -234,6 +236,7 @@ NB: You can run the program by typing `dotnet run` in a shell.
 
 <!-- Links -->
 [algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type
-[example]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
+[derivation]: https://en.wikipedia.org/wiki/Context-free_grammar#Derivations_and_syntax_trees
+[example/]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 [lexeme]: https://en.wikipedia.org/wiki/Lexical_analysis#Lexeme
