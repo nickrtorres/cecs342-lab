@@ -1,8 +1,8 @@
 open System
 open System.Text.RegularExpressions
 
-exception SyntaxException of string
 exception LexicalException of string
+exception SyntaxException of string
 
 type Token =
     | Eq
