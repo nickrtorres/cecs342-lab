@@ -12,6 +12,8 @@
 <expr>            ::= number
 <expr>            ::= identifier
 
+; Example
+; =======
 ; source text = "let x = 10 ; print x"
 ; <program> ::= <stmt>
 ;           ::= <stmt> ; <stmt>
