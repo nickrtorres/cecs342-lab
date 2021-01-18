@@ -90,7 +90,7 @@ struct Token {
 };
 ```
 
-In a language with [algebraic data types] (i.e. F#, Rust, Haskell, etc.), the
+In a language with [algebraic data types] (e.g. F#, Rust, Haskell, etc.), the
 tag can be encoded directly as one of the variants.
 ```fsharp
 type Token =
@@ -115,6 +115,88 @@ let ~ = 100 ;;
 If the character `~` does not exist in our language, then the lexer can return
 an error that indicates that there is a lexical program with the program --
 namely, the existence of the `~` character in the program.
+
+## Syntax Analysis
+
+After breaking the source text into a stream of tokens, the lexer passes
+control to the parser. The parser is responsible for analyzing the syntax of a
+program. 
+
+Context-free grammars consist of a single start symbol and a finite number of
+terminal and nonterminal symbols. Nonterminal symbols expand into other
+nonterminal or terminal symbols through *production rules*. The set of terminal
+symbols in a context free grammar make up the alphabet of the language [cite].
+
+Context-free grammars are often expressed in Backus-Naur form (BNF). BNF uses
+angle brackets for nonterminals and the metasyntactic symbol `::=` to denote a
+production rule. Everything else (i.e. an element not in angle brackets) is
+considered a terminal symbol.
+
+An example context-free grammar is given below for the made up language,
+Arithmos. Arithmos only supports binding statements of the form `let foo = bar`
+and printing statements of the form `print foo`.
+
+```
+<program>         ::= <stmt_list>
+<stmt_list>       ::= <stmt>
+<stmt_list>       ::= <stmt> ; <stmt_list>
+
+<stmt>            ::= <print_stmt>
+<stmt>            ::= <let_stmt>
+
+<print_stmt>      ::= print <expr>
+
+<let_stmt>        ::= let identifier = <expr>
+
+<expr>            ::= number
+<expr>            ::= identifier
+
+```
+
+In this example, <program> is the start symbol. The nonterminals are
+{ <program>, <stmt_list>, <stmt>, <print_stmt>, <let_stmt>, <expr> }. The
+terminals are { ';', print, let, identifier, number }.
+
+Consider the following Arithmos statement: `let x = 42`. Expanding this
+statement with the grammar above looks like this.
+
+```
+<program>     ::=  <stmt_list>
+              ::=  <stmt>
+              ::=  <let_stmt>
+              ::=  let x = <expr>
+              ::=  let x = 42
+```
+The expansion of a statement from a context-free grammar is called a
+*derivation*.  From this derivation, we can conclude that the statement `let x
+= 42` is valid in the Arithmos language.
+
+Alternatively, consider the statement: `var x = 42`. Expanding this statement
+with the same grammar results in the following derivation.
+
+```
+<program>     ::=  <stmt_list>
+              ::=  <stmt>
+              ::=  ERROR: no matching rule beginning with `var ...`
+```
+
+Failure to expand the statement `var x = 42` represents a *syntax error* --
+there aren't *any* rules in our grammar that match this statement.
+
+Finally, consider the statement `let x = y`. Expanding this statement yields
+the following derivation.
+```
+<program>     ::=  <stmt_list>
+              ::=  <stmt>
+              ::=  <let_stmt>
+              ::=  let x = <expr>
+              ::=  let x = y
+```
+
+Since `y` is a valid identifier, this statement yields a valid derivation.
+However, it may be the case that `y` was never defined in an earlier statement
+in the program. This is not something that a context-free grammar can identify.
+This requires a new phase: semantic analysis.
 
 ## References
 [2]: See for yourself! Rust's original compiler was written in OCaml and
