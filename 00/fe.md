@@ -148,7 +148,7 @@ and printing statements of the form `print foo`.
 
 ```
 
-In this example, <program> is the start symbol. The nonterminals are `{
+In this example, `<program>` is the start symbol. The nonterminals are `{
 <program>, <stmt_list>, <stmt>, <print_stmt>, <let_stmt>, <expr> }`. The
 terminals are `{ ';', print, let, identifier, number }`.
 
