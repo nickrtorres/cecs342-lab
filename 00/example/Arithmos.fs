@@ -106,7 +106,7 @@ let semant ast =
             | PrintStmt exp ->
                 match exp with
                 | Identifier iden when not <| Set.contains iden sym ->
-                    raise (SemanticException(sprintf "undefined symbol '%s'" iden))
+                    raise (SemanticException(sprintf "Undefined symbol: '%s'" iden))
                 | _ -> sym
 
         match ast with
