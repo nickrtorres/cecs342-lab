@@ -57,7 +57,7 @@ the next phase. An overview of these phases is depicted below.
 
 This overview will focus on the phases of the compiler that work to understand
 (and detect errors in) the *syntax* and *semantics* of a compiler. These phases
-are: *lexical analysis*, *parsing*, and *semantic analysis* -- together they
+are: *lexical*, *syntax*, and *semantic* analysis -- together they
 make up the front end of a typical compiler.
 
 ## Lexical Analysis
