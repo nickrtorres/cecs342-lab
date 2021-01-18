@@ -171,8 +171,8 @@ statement with the grammar above looks like this.
               ::=  let x = 42
 ```
 The expansion of a statement from a context-free grammar is called a
-*[derivation]*.  From this derivation, we can conclude that the statement `let x
-= 42` is valid in the Arithmos language.
+*[derivation]*.  This derivation means that `let x = 42` is a valid statement
+in Arithmos.
 
 Alternatively, consider the statement: `var x = 42`. Expanding this statement
 with the same grammar results in the following derivation.
@@ -184,7 +184,7 @@ with the same grammar results in the following derivation.
 ```
 
 Failure to expand the statement `var x = 42` represents a *syntax error* --
-there aren't *any* rules in our grammar that match this statement.
+that is, there aren't *any* rules in our grammar that match this statement.
 
 Finally, consider the statement `let x = y`. Expanding this statement yields
 the following derivation.
