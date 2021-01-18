@@ -28,20 +28,17 @@ let lex (source: string) =
 
     let fromStr token =
         match token with
-        | " " -> None
-        | "=" -> Some Eq
-        | "let" -> Some Let
-        | "-" -> Some Minus
-        | "print" -> Some Print
-        | "+" -> Some Plus
-        | ";" -> Some Semicolon
-        | d when isNumber d -> Some(Num(Convert.ToInt32 d))
-        | s when isIdentifier s -> Some(Identifier s)
+        | "=" -> Eq
+        | "let" -> Let
+        | "-" -> Minus
+        | "print" -> Print
+        | "+" -> Plus
+        | ";" -> Semicolon
+        | d when isNumber d -> Num(Convert.ToInt32 d)
+        | s when isIdentifier s -> Identifier s
         | s -> raise (LexicalException(s))
 
-    Array.map fromStr tokenized
-    |> Array.choose id
-    |> Array.toList
+    Array.map fromStr tokenized |> Array.toList
 
 type Expr =
     | Num of int
@@ -63,10 +60,7 @@ let parse tokens =
         | (e, a) -> e = a
 
     let eat tokens exp =
-        if (isMatch (List.head tokens) exp) then
-            (List.head tokens, List.tail tokens)
-        else
-            failwith "unexpected token!"
+        if (isMatch (List.head tokens) exp) then (List.head tokens, List.tail tokens) else failwith "unexpected token!"
 
     let rec program tokens = stmtList tokens
 
