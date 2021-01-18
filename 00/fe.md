@@ -1,8 +1,10 @@
 ## An overview of (front-end) compiler design
 
-NB: This overview roughly correlates to chapter 1.6 from *Programming Language
-Pragmatics*. Ancillary references are listed in the [references section] at the
-bottom of this file.
+NB1: This is still a WIP
+
+NB2: This document provides provides an overview to chapter 1.6 from
+*Programming Language Pragmatics*. Helpful links are inlined throughout. If you
+see any errors, feel free to open an issue or PR to report or fix them.
 
 ---
 
@@ -198,11 +200,40 @@ However, it may be the case that `y` was never defined in an earlier statement
 in the program. This is not something that a context-free grammar can identify.
 This requires a new phase: semantic analysis.
 
-## References
-[2]: See for yourself! Rust's original compiler was written in OCaml and
-followed this form pretty closely: https://github.com/rust-lang/rust/tree/ef75860a0a72f79f97216f8aaa5b388d98da6480/src/boot/fe
+## Semantic Analysis
+
+@TODO
+
+## Example
+
+An example lexer and parser for Arithmos is provided in the [example/]
+directory.  The implementation is about 100 lines and does not perform any
+semantic analysis. Additionally, the input stream is split on whitespace, so
+you'll need to add space around lexemes (e.g. `let x = 42 ; print x` instead of
+`let x = 42; print x`).
+
+@TODO
+Some possible exercises:
+- Try updating the lexer to support statements without a space between the
+  semicolon (e.g. `let x = 42; print x` instead of `let x = 42 ; print x`).
+- Add a semantic analyzer that stores bindings in a symbol table and raises a
+  `SemanticException` if a binding is referenced before it is defined.
+
+NB: You can run the program by typing `dotnet run` in a shell.
+
+## Additional references and other cool stuff
+- See for yourself! Rust's original compiler was written in OCaml and follows a
+  similar form described above.
+  https://github.com/rust-lang/rust/tree/ef75860a0a72f79f97216f8aaa5b388d98da6480/src/boot/fe
+
+- Anders Hejlsberg (C#, Typescript, etc.) talks about modern compiler
+  implementation.  https://youtu.be/wSdV1M7n4gQ
 
 
+
+
+<!-- Links -->
+[algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type
+[example]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 [lexeme]: https://en.wikipedia.org/wiki/Lexical_analysis#Lexeme
-[algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type

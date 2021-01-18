@@ -1,0 +1,22 @@
+<program>         ::= <stmt_list>
+<stmt_list>       ::= <stmt>
+<stmt_list>       ::= <stmt> ; <stmt_list>
+
+<stmt>            ::= <print_stmt>
+<stmt>            ::= <let_stmt>
+
+<print_stmt>      ::= print <expr>
+
+<let_stmt>        ::= let identifier = <expr>
+
+<expr>            ::= number
+<expr>            ::= identifier
+
+; source text = "let x = 10 ; print x"
+; <program> ::= <stmt>
+;           ::= <stmt> ; <stmt>
+;           ::= <let> ; <stmt>
+;           ::= let x = <expr> ; <stmt>
+;           ::= let x = 10 ; <stmt>
+;           ::= let x = 10 ; print <expr>
+;           ::= let x = 10 ; print x
