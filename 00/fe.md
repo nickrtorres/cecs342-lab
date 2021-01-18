@@ -2,9 +2,9 @@
 
 NB1: This is still a WIP
 
-NB2: This document provides provides an overview to chapter 1.6 from
-*Programming Language Pragmatics*. Helpful links are inlined throughout. If you
-see any errors, feel free to open an issue or PR to report or fix them.
+NB2: This document provides an overview to chapter 1.6 from *Programming
+Language Pragmatics*. Helpful links are inlined throughout. If you see any
+errors, feel free to open an issue or PR to report or fix them.
 
 ---
 
