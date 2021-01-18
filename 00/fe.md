@@ -124,12 +124,12 @@ program.
 
 @TODO -- parse trees and ASTs
 
-Context-free grammars consist of a single start symbol and a finite number of
-terminal and nonterminal symbols. Nonterminal symbols expand into other
-nonterminal or terminal symbols through *production rules*.
+[Context-free grammars][CFG] consist of a single start symbol and a finite
+number of terminal and nonterminal symbols. Nonterminal symbols expand into
+other nonterminal or terminal symbols through *production rules*.
 
-Context-free grammars are often expressed in [Backus-Naur form][BNF] (BNF). BNF uses
-angle brackets for nonterminals and the metasyntactic symbol `::=` to denote a
+Context-free grammars are often expressed in [Backus-Naur form][BNF] (BNF). BNF
+uses angle brackets for nonterminals and the `::=` symbol to denote a
 production rule. Everything else (i.e. an element not in angle brackets) is
 considered a terminal symbol.
 
@@ -154,9 +154,9 @@ and printing statements of the form `print foo`.
 
 ```
 
-In this example, <program> is the start symbol. The nonterminals are
-{ <program>, <stmt_list>, <stmt>, <print_stmt>, <let_stmt>, <expr> }. The
-terminals are { ';', print, let, identifier, number }.
+In this example, <program> is the start symbol. The nonterminals are `{
+<program>, <stmt_list>, <stmt>, <print_stmt>, <let_stmt>, <expr> }`. The
+terminals are `{ ';', print, let, identifier, number }`.
 
 ### Derivations and errors
 
@@ -238,6 +238,7 @@ NB: You can run the program by typing `dotnet run` in a shell.
 
 <!-- Links -->
 [BNF]: https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form
+[CFG]: https://en.wikipedia.org/wiki/Context-free_grammar
 [algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type
 [derivation]: https://en.wikipedia.org/wiki/Context-free_grammar#Derivations_and_syntax_trees
 [example/]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
