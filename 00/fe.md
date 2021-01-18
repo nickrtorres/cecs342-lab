@@ -68,9 +68,7 @@ phases of the compiler.
 
 A token will generally have
 1. A type or tag
-2. A line number (from the original source text. This may be omitted when using
-   a lexical analysis generator like [lex] if the generator provides an API to
-   obtain this information without encoding it into the type.)
+2. A line number (from the original source text.)
 3. A [lexeme] -- that is, the underlying fragment from the source text that
    corresponds to the token.
 
@@ -122,14 +120,15 @@ the existence of the `~` character in the program.
 
 After breaking the source text into a stream of tokens, the lexer passes
 control to the parser. The parser is responsible for analyzing the syntax of a
-program. 
+program.
+
+@TODO -- parse trees and ASTs
 
 Context-free grammars consist of a single start symbol and a finite number of
 terminal and nonterminal symbols. Nonterminal symbols expand into other
-nonterminal or terminal symbols through *production rules*. The set of terminal
-symbols in a context free grammar make up the alphabet of the language [cite].
+nonterminal or terminal symbols through *production rules*.
 
-Context-free grammars are often expressed in Backus-Naur form (BNF). BNF uses
+Context-free grammars are often expressed in [Backus-Naur form][BNF] (BNF). BNF uses
 angle brackets for nonterminals and the metasyntactic symbol `::=` to denote a
 production rule. Everything else (i.e. an element not in angle brackets) is
 considered a terminal symbol.
@@ -139,19 +138,19 @@ Arithmos. Arithmos only supports binding statements of the form `let foo = bar`
 and printing statements of the form `print foo`.
 
 ```
-<program>         ::= <stmt_list>
-<stmt_list>       ::= <stmt>
-<stmt_list>       ::= <stmt> ; <stmt_list>
+<program>     ::= <stmt_list>
+<stmt_list>   ::= <stmt>
+<stmt_list>   ::= <stmt> ; <stmt_list>
 
-<stmt>            ::= <print_stmt>
-<stmt>            ::= <let_stmt>
+<stmt>        ::= <print_stmt>
+<stmt>        ::= <let_stmt>
 
-<print_stmt>      ::= print <expr>
+<print_stmt>  ::= print <expr>
 
-<let_stmt>        ::= let identifier = <expr>
+<let_stmt>    ::= let identifier = <expr>
 
-<expr>            ::= number
-<expr>            ::= identifier
+<expr>        ::= number
+<expr>        ::= identifier
 
 ```
 
@@ -215,8 +214,7 @@ split on whitespace, so you'll need to add space around lexemes (e.g. `let x =
 42 ; print x` instead of
 `let x = 42; print x`).
 
-@TODO
-Some possible exercises:
+@TODO Some possible exercises:
 - Try updating the lexer to support statements without a space between the
   semicolon (e.g. `let x = 42; print x` instead of `let x = 42 ; print x`).
 - Add a semantic analyzer that stores bindings in a symbol table and raises a
@@ -224,7 +222,10 @@ Some possible exercises:
 
 NB: You can run the program by typing `dotnet run` in a shell.
 
-## Additional references and other cool stuff
+## Final remarks, additional resources, and other cool stuff
+
+@TODO
+
 - See for yourself! Rust's original compiler was written in OCaml and follows a
   similar form described above.
   https://github.com/rust-lang/rust/tree/ef75860a0a72f79f97216f8aaa5b388d98da6480/src/boot/fe
@@ -236,6 +237,7 @@ NB: You can run the program by typing `dotnet run` in a shell.
 
 
 <!-- Links -->
+[BNF]: https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form
 [algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type
 [derivation]: https://en.wikipedia.org/wiki/Context-free_grammar#Derivations_and_syntax_trees
 [example/]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
