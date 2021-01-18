@@ -1,4 +1,4 @@
-## An overview of (front-end) compiler design
+## An overview of (front end) compiler design
 
 NB1: This is still a WIP
 
@@ -7,11 +7,11 @@ Language Pragmatics*. Helpful links are inlined throughout. If you see any
 errors, feel free to open an issue or PR to report or fix them.
 
 ---
-
-Compilers work in a number of phases (often called passes) that transform a
-source text program into machine instructions that can be executed by a target
-CPU. Each phase is an abstraction that provides an interface (or contract) to
-the next phase. An overview of these phases is depicted below.
+This overview will focus on the phases of the compiler that work to understand
+(and detect errors in) the *syntax* and *semantics* of a source program. These
+phases are: *lexical*, *syntax*, and *semantic* analysis -- together they make
+up the front end of a typical compiler. A depiction of these phases is provided
+below.
 
 ```
                              | Source program (e.g. main.cpp)
@@ -55,20 +55,14 @@ the next phase. An overview of these phases is depicted below.
 
 ```
 
-This overview will focus on the phases of the compiler that work to understand
-(and detect errors in) the *syntax* and *semantics* of a compiler. These phases
-are: *lexical*, *syntax*, and *semantic* analysis -- together they
-make up the front end of a typical compiler.
-
 ## Lexical Analysis
 
-Lexical analysis breaks a source program into its smallest, *meaningful* units.
-It generates a stream of tokens that the parser can pull from in the subsequent
-phases of the compiler.
+Lexical analysis breaks a source program into tokens that are used by the
+parser to build subsequent data structures.
 
 A token will generally have
 1. A type or tag
-2. A line number (from the original source text.)
+2. A line number (from the original source text)
 3. A [lexeme] -- that is, the underlying fragment from the source text that
    corresponds to the token.
 
@@ -211,16 +205,14 @@ An example [lexer] and [parser] for Arithmos -- the language described above --
 is provided in the [example/] directory.  The implementation is about 100 lines
 and does not perform any semantic analysis. Additionally, the input stream is
 split on whitespace, so you'll need to add space around lexemes (e.g. `let x =
-42 ; print x` instead of
-`let x = 42; print x`).
+42 ; print x` instead of `let x = 42; print x`).
 
-@TODO Some possible exercises:
+Some possible exercises:
 - Try updating the lexer to support statements without a space between the
   semicolon (e.g. `let x = 42; print x` instead of `let x = 42 ; print x`).
 - Add a semantic analyzer that stores bindings in a symbol table and raises a
   `SemanticException` if a binding is referenced before it is defined.
-
-NB: You can run the program by typing `dotnet run` in a shell.
+- @TODO
 
 ## Final remarks, additional resources, and other cool stuff
 
@@ -232,8 +224,6 @@ NB: You can run the program by typing `dotnet run` in a shell.
 
 - Anders Hejlsberg (C#, Typescript, etc.) talks about modern compiler
   implementation.  https://youtu.be/wSdV1M7n4gQ
-
-
 
 
 <!-- Links -->
