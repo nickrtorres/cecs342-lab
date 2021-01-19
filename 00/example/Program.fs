@@ -8,33 +8,37 @@ exception SemanticException of string
 type Token =
     | Eq
     | Identifier of string
+    | Input
     | Let
-    | Num of int
-    | Print
-    | Plus
     | Minus
+    | Nil
+    | Num of int
+    | Plus
+    | Print
     | Semicolon
 
-let identifierFromToken token =
-    match token with
+let idenOfToken =
+    function
     | Identifier s -> s
     | _ -> failwith "invalid access!"
 
 let lex (source: string) =
     let tokenized = source.Split()
-    let isNumber d = Regex.IsMatch(d, "[0-9]+")
+    let isNumber d = Regex.IsMatch(d, "^[0-9]+$")
 
     let isIdentifier s =
-        Regex.IsMatch(s, "[a-zA-Z][a-zA-Z0-9_]*")
+        Regex.IsMatch(s, "^[a-zA-Z][a-zA-Z0-9_]*$")
 
     let fromStr token =
         match token with
-        | "=" -> Eq
-        | "let" -> Let
-        | "-" -> Minus
-        | "print" -> Print
         | "+" -> Plus
+        | "-" -> Minus
         | ";" -> Semicolon
+        | "=" -> Eq
+        | "input" -> Input
+        | "let" -> Let
+        | "nil" -> Nil
+        | "print" -> Print
         | d when isNumber d -> Num(Convert.ToInt32 d)
         | s when isIdentifier s -> Identifier s
         | s -> raise (LexicalException(s))
@@ -44,10 +48,12 @@ let lex (source: string) =
 type Expr =
     | Num of int
     | Identifier of string
+    | Nil
 
 type Stmt =
     | LetStmt of string * Expr
     | PrintStmt of Expr
+    | InputStmt of string
 
 type StmtList =
     | SingleStmt of Stmt
@@ -79,23 +85,30 @@ let parse tokens =
         match tokens with
         | Let :: tl -> letStmt tl
         | Print :: tl -> printStmt tl
+        | Input :: tl -> inputStmt tl
         | t -> raise (SyntaxException(sprintf "invalid start of statement: '%A'" (t)))
 
     and expression tokens =
         match tokens with
-        | Token.Num n :: tl -> (Num n, tl)
         | Token.Identifier s :: tl -> (Identifier s, tl)
+        | Token.Nil :: tl -> (Nil, tl)
+        | Token.Num n :: tl -> (Num n, tl)
         | t -> raise (SyntaxException(sprintf "invalid start of expression: '%A'" (t)))
 
     and letStmt tokens =
         let iden, afterIden = eat tokens (Token.Identifier "")
         let _, afterEq = eat afterIden Eq
         let expr, afterExpr = expression afterEq
-        LetStmt(identifierFromToken iden, expr), afterExpr
+        LetStmt(idenOfToken iden, expr), afterExpr
 
     and printStmt tokens =
         let expr, afterExpr = expression tokens
         PrintStmt(expr), afterExpr
+
+    and inputStmt tokens =
+        let iden, tl = eat tokens (Token.Identifier "")
+        InputStmt(idenOfToken iden), tl
+
 
     program tokens
 
@@ -109,6 +122,9 @@ let semant ast =
                 | Identifier iden when not <| Set.contains iden sym ->
                     raise (SemanticException(sprintf "undefined symbol: '%s'" iden))
                 | _ -> sym
+            | InputStmt iden when not <| Set.contains iden sym ->
+                raise (SemanticException(sprintf "undefined symbol: '%s'" iden))
+            | _ -> sym
 
         match ast with
         | SingleStmt s -> semantStmt s sym

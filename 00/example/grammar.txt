@@ -2,15 +2,17 @@
 <stmt_list>       ::= <stmt>
 <stmt_list>       ::= <stmt> ; <stmt_list>
 
-<stmt>            ::= <print_stmt>
+<stmt>            ::= <input_stmt>
 <stmt>            ::= <let_stmt>
+<stmt>            ::= <print_stmt>
 
+<input_stmt>      ::= input identifier
 <print_stmt>      ::= print <expr>
-
 <let_stmt>        ::= let identifier = <expr>
 
-<expr>            ::= number
 <expr>            ::= identifier
+<expr>            ::= nil
+<expr>            ::= number
 
 ; Example
 ; =======
