@@ -1,6 +1,6 @@
 ## An overview of (front end) compiler design
 
--- 
+---
 
 NB: This document provides an overview to chapter 1.6 from *Programming
 Language Pragmatics*. Helpful links are inlined throughout. If you see any
