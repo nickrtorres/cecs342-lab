@@ -29,7 +29,7 @@ let lex (source: string) =
     let isIdentifier s =
         Regex.IsMatch(s, "^[a-zA-Z][a-zA-Z0-9_]*$")
 
-    let fromStr token =
+    let tokenOfString token =
         match token with
         | "+" -> Plus
         | "-" -> Minus
@@ -43,7 +43,7 @@ let lex (source: string) =
         | s when isIdentifier s -> Identifier s
         | s -> raise (LexicalException(s))
 
-    Array.map fromStr tokenized |> Array.toList
+    Array.map tokenOfString tokenized |> Array.toList
 
 type Expr =
     | Num of int
