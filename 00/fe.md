@@ -213,10 +213,11 @@ errors that can occur during semantic analysis: static and dynamic.
 
 Consider the program: `let x = 42 ; print y`
 
-Since `y` was never bound to a value, attempting to print `y` is a *semantic
-error*. More specifically, it is a *static* semantic error -- there is enough
-information known at compile time halt compilation and inform the programmer
-of an error.
+In this program `y` was never given a value (through a `let` statement), so `y`
+is an undefined variable; attempting to print `y` is a *semantic error*. More
+specifically, this is a *static* semantic error -- there is enough information
+known at compile time to halt compilation and inform the programmer of the
+error.
 
 But how does the compiler know that `y` wasn't defined? A compiler will build a
 symbol table by traversing the intermediate representation produced by the
@@ -273,11 +274,32 @@ language designer decides to enforce invariants at runtime, then the resulting
 program will have more machine instructions to check those invariants (and
 potentially throw an exception or crash if they no longer hold).
 
-C pushes the safety responsibility onto the programmer and does not check
-whether a pointer is null before attempting to dereference it -- attempting to
-dereference null is considered [undefined behavior]. Conversely, Java will
-raise a `NullPointerException` when a programmer attempts to deference a null
-reference.
+Language designers may choose to value efficiency over safety. An example of
+this is the difference between how C and Java handle null references.
+
+```c
+int main() {
+  int *px = 0x0;
+  int x = *px; // NULL pointer dereference -- undefined behavior
+}
+```
+
+The C compiler will not warn the programmer or throw an exception, instead it
+will try to execute the instructions as written and derefence `NULL`. This is
+[undefined behavior] in C.
+
+Conversely, the Java runtime will throw a `NullPointerException` if the
+programmer tries to deference `null`.
+
+```java
+public class Example {
+  public static void main(String[] args) {
+    Integer x = null;
+    Integer y = x + 1; // Exception in thread "main" java.lang.NullPointerException
+  }
+}
+
+```
 
 ## A summary of errors
 
@@ -288,27 +310,26 @@ compilation occur one after the other.
 Lexical errors occur when a token is malformed or does not exist in the language.
 Some examples include:
   - Identifiers that don't conform to the rules of the language (e.g. If a
-    language requires identifiers to begin with a lowercase letter, then $foo
+    language requires identifiers to begin with a lowercase letter, then `$foo`
     is a malformed identifier).
-  - Invalid symbols (e.g. Unicode symbols in a language that only supports the
-    ascii character set).
+  - Invalid symbols (e.g. Unicode code points in a language that only supports
+    the ASCII code points).
 
 Syntax errors occur when a valid production rule fails to match for the token
 stream produced by the lexer.  Some examples include:
   - `int x y = 10;` in C -- Adjacent identifiers are only allowed if they are
     separated by a comma; not whitespace.
-  - `int 10 = 10` in C -- 10 is not a valid identifier, but is a valid token in
+  - `int 10 = 10;` in C -- `10` is not a valid identifier, but is a valid token in
     the language.
 
 Semantic errors occur when the meaning of a program doesn't make sense. Some
 semantic errors can be checked statically, others require additional machine
 instructions at runtime. Some examples include:
   - `int x = "foo"` is a static semantic error in Java.
+  - `void f(void) {} int main() { f(42); return 0; }` is a static sematic error
+    in C -- `f` is a void function that takes 0 arguments.
   - `int[] xs = {42}; xs[1000] = 42` is a dynamic semantic error in Java (the
     Java runtime will throw `java.lang.ArrayIndexOutOfBoundsException`).
-  - `void f(void) {} int main() { f(42); return 0 }` in C -- `f` is a void
-    function that takes 0 arguments.  Calling `f` with 1 argument is a static
-    semantic error.
 
 ## Example
 
@@ -331,11 +352,16 @@ Example grammars:
 - C# (along with quite a bit of explanation!):
   https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/lexical-structure#syntactic-grammar
 
+Example compilers:
 
-See for yourself! Rust's original compiler was written in OCaml and follows a
-similar form described above.
+- Rust's original compiler was written in OCaml and follows a similar form
+  described above.
   https://github.com/rust-lang/rust/tree/ef75860a0a72f79f97216f8aaa5b388d98da6480/src/boot/fe
 
+- The Swift programming language: https://github.com/apple/swift/tree/main/include/swift/Parse
+
+- The Zig programming language (see tokenizer.zig, parse.zig, ast.zig):
+  https://github.com/ziglang/zig/tree/master/lib/std/zig
 
 <!-- Links -->
 [BNF]: https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form
