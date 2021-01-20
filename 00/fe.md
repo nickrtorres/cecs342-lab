@@ -124,10 +124,8 @@ uses angle brackets for nonterminals and the `::=` symbol to denote a
 production rule. Everything else (i.e. an element not in angle brackets) is
 considered a terminal symbol.
 
-An example context-free grammar is given below for the made up language,
-Arithmos. Arithmos only supports binding statements of the form `let foo = bar`
-and printing statements of the form `print foo`.
-
+An example context-free grammar is given below for a simple made up language,
+Arithmos.
 ```
 <program>         ::= <stmt_list>
 <stmt_list>       ::= <stmt>
