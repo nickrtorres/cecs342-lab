@@ -10,10 +10,8 @@ type Token =
     | Identifier of string
     | Input
     | Let
-    | Minus
     | Nil
     | Num of int
-    | Plus
     | Print
     | Semicolon
 
@@ -31,8 +29,6 @@ let lex (source: string) =
 
     let tokenOfString token =
         match token with
-        | "+" -> Plus
-        | "-" -> Minus
         | ";" -> Semicolon
         | "=" -> Eq
         | "input" -> Input
