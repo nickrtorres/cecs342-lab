@@ -207,7 +207,7 @@ This requires a new phase: semantic analysis.
 
 After parsing the compiler starts semantic analysis to understand and verify
 the meaning of a program. For this overview we'll focus on two categories of
-errors that can occur: static and dynamic.
+errors that can occur during semantic analysis: static and dynamic.
 
 ### Static errors
 
