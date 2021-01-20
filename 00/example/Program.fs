@@ -112,15 +112,15 @@ let semant ast =
     let rec semant' ast sym =
         let semantStmt s (sym: string Set) =
             match s with
-            | LetStmt (iden, _) -> Set.add iden sym
-            | PrintStmt expr ->
-                match expr with
-                | Identifier iden when not <| Set.contains iden sym ->
-                    raise (SemanticException(sprintf "undefined symbol: '%s'" iden))
-                | _ -> sym
             | InputStmt iden when not <| Set.contains iden sym ->
                 raise (SemanticException(sprintf "undefined symbol: '%s'" iden))
-            | _ -> sym
+            | LetStmt (_, (Identifier iden)) when not <| Set.contains iden sym ->
+                raise (SemanticException(sprintf "undefined symbol: '%s'" iden))
+            | PrintStmt (Identifier iden) when not <| Set.contains iden sym ->
+                raise (SemanticException(sprintf "undefined symbol: '%s'" iden))
+            | LetStmt (iden, _) -> Set.add iden sym
+            | InputStmt _
+            | PrintStmt _ -> sym
 
         match ast with
         | SingleStmt s -> semantStmt s sym
