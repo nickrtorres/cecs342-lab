@@ -371,7 +371,7 @@ Example compilers:
 [example/]: https://github.com/nickrtorres/cecs342-lab/tree/master/00/example
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 [lexeme]: https://en.wikipedia.org/wiki/Lexical_analysis#Lexeme
-[lexer]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Program.fs#L25
-[parser]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Program.fs#L62
-[semant]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Program.fs#L115
+[lexer]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Program.fs#L23
+[parser]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Program.fs#L58
+[semant]: https://github.com/nickrtorres/cecs342-lab/blob/master/00/example/Program.fs#L110
 [undefined behavior]: https://en.wikipedia.org/wiki/Undefined_behavior
