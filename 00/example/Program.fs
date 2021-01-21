@@ -73,9 +73,8 @@ let parse tokens =
     and stmtList tokens =
         match stmt tokens with
         | (s, []) -> SingleStmt s
-        | (s, tl) ->
-            let _, afterSemi = eat tl Semicolon
-            CompoundStmt(s, stmtList afterSemi)
+        | (s, Semicolon :: tl) -> CompoundStmt(s, stmtList tl)
+        | _ -> raise (SyntaxException "expected semicolon between statements")
 
     and stmt tokens =
         match tokens with
