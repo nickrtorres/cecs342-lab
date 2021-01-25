@@ -5,8 +5,17 @@
 //     countMultiples 10 = 23 // 3 + 5 + 6 + 9
 //     countMultiples 15 = 45 // 3 + 5 + 6 + 9 + 10 + 12
 let countMultiples endpoint =
-    // Update this function so that it computes the output described above.
-    0
+    let mutable count = 1
+    let mutable sum = 0
+
+    while count < endpoint do
+        if count % 5 = 0 || count % 3 = 0 then
+            sum <- sum + count
+
+        count <- count + 1
+
+    sum
+
 
 
 // `sumOfSquaresOfMax` takes as input three integers and computes the sum of
@@ -16,8 +25,11 @@ let countMultiples endpoint =
 //     sumOfSquaresOfMax 1 2 3 = 13 // 2^2 + 3^2
 //     sumOfSquaresOfMax 4 6 5 = 61 // 5^2 + 6^2
 let sumOfSquaresOfMax x y z =
-    // Update this function so that it computes the output described above.
-    0
+    let a = max x y
+    let b = if a = x then max y z else max x z
+
+    a * a + b * b
+
 
 
 //*****************************************************************************
@@ -67,7 +79,7 @@ let runTests p =
     | Squares -> squares ()
 
 //*****************************************************************************
-// End: Test cases
+// END: Test cases
 // Please do not modify the test cases.
 //*****************************************************************************
 
