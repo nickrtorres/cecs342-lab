@@ -19,7 +19,8 @@ struct A {
 
 1. How many bytes will a value of type `A` occupy?
 2. How many bytes will `A[10]` occupy?
-3. Provide an alternate declaration of `A` that reduces the amount of padding
+3. How many bytes will `A*[10]` occupy?
+4. Provide an alternate declaration of `A` that reduces the amount of padding
    needed to satisfy the alignment rules.
 
 
