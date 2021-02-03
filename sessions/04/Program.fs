@@ -175,7 +175,7 @@ assert (contains 50 xs)
 assert (contains 10 xs)
 assert (not (contains 42 xs))
 
-// Just like recursive functions, recursive types need a way to stop, otherwise
+// Just like recursive functions, recursive types need a way to stop. Otherwise
 // you'll end up with something that goes on forever.
 type MyInfiniteType = Infinity of MyInfiniteType
 // let inf = Infinity (Infinity (Infinity ...))
