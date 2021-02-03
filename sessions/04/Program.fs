@@ -74,11 +74,7 @@ let isB m =
 
 // You can also use the "don't care" syntax you learned to ignore certain data
 // constructors. This will handle the warning above, but it comes with a cost.
-let isA2 m =
-    match m with
-    | A -> true
-    | _ -> false
-
+//
 // The F# compiler can no longer warn you if you miss a case when you use '_'.
 // Consider a case where we decide to add a new data constructor to MyType that
 // should also return true for isB (a very intuitive procedure name).
@@ -91,9 +87,32 @@ let isA2 m =
 //     | AlsoCountsAsB
 //
 // Now our isB procedure will silently fail without any warning from the compiler!
+let isA2 m =
+    match m with
+    | A -> true
+    | _ -> false
+
+// Discriminated unions can also hold data. Below, we define a new type
+// constructor called Contact that has two data constructors: Email and Phone.^
 //
-//
-// Discriminated unions can also hold data in the form of tuples.
+// ^: This example is from the course lecture notes:
+// https://github.com/csulb-cecs342-2021sp/Lectures/blob/master/FSharp/Unions/Program.fs#L16
+type Contact =
+    | Email of string
+    | Phone of int64
+
+let joe = Phone 1234567890L
+let alyssa = Email "alyssa@example.com"
+
+let howToContact contact =
+    match contact with
+    | Email e -> "Email them at " + e
+    | Phone p -> "Call them at " + string p
+
+printfn "%s" (howToContact joe)
+printfn "%s" (howToContact alyssa)
+
+// Here's another example of holding data in a discriminated union.
 //
 // Below, SafeDivisionResult holds the result of performing "safe" division on
 // two numbers. The result of "safe" division is defined below.
@@ -115,71 +134,35 @@ let safeDivide dividend divisor =
 assert (Quotient 21 = safeDivide 42 2)
 assert (Undefined = safeDivide 1 0)
 
+// You can store multiple values in a data constructor with tuples.
+type Number =
+    | Natural of int
+    | Rational of int * int
+
+// You can also match on tuples using the same `match` syntax.
+let addTwoNumbers a b =
+    match (a, b) with
+    | (Natural n1, Natural n2) -> Natural(n1 + n2)
+    | (Rational (p1, q1), Rational (p2, q2)) ->
+        if q1 = q2 then
+            Rational(p1 + p2, q2)
+        else
+            Rational(q2 * p1 + q1 * p2, q1 * q2)
+    | (Natural n, Rational (p, q))
+    | (Rational (p, q), Natural n) -> Rational(1 * p + q * n, q)
+
+let oneHalf = Rational(1, 2)
+let oneQuarter = Rational(1, 4)
+let four = Natural 4
+assert (Rational(6, 8) = (addTwoNumbers oneHalf oneQuarter))
+assert (Rational(2, 2) = (addTwoNumbers oneHalf oneHalf))
+assert (Rational(9, 2) = (addTwoNumbers four oneHalf))
+
 // Discriminated unions can also refer to themselves. This is called a recursive
-// data type. Below, LinkedList is defined as either Empty or a Cons of an
-// integer (the head) and another LinkedList (the tail).
+// data type. Below, Expr is defined as Add of two Expr's (an augend and an
+// addend), Sub of two Expr's (a subtrahend and a minuend), or Int of a single
+// atomic number.
 //
-// NB: The word 'Cons' [1] is ubiquitous in many functional programming
-// languages. It stands for "construct" and is a primitive procedure in many
-// functional languages (F# also has a built-in cons operator!).
-//
-// [1]: https://en.wikipedia.org/wiki/Cons
-type LinkedList =
-    | Empty
-    | Cons of hd: int * tl: LinkedList
-
-// The list below has the following structure.
-//
-//      let mylist = Cons (1, Cons (2, Cons (3, Empty)))
-//          |
-//          |
-//          V
-//          +-+    +-+    +-+
-//          |1|--->|2|--->|3|---> Empty
-//          +-+    +-+    +-+
-let mylist = Cons(1, Cons(2, Cons(3, Empty)))
-
-// Adding an item to a list is as simple as 'cons'ing the new element with the
-// old list. This operation is not destructive. Instead, it returns a new list
-// with 'x' appended to the front.
-let add x xs = Cons(x, xs)
-
-// Checking for membership in a list _can_ look just like an imperative
-// language, i.e., iterating through the list with a pointer to the current
-// element. There are nicer ways to do this, but more on those later.
-//
-// Note the first arm in the match statement below. The `when <boolean-expression>`
-// is called a guard. The pattern must match and the guard expression must
-// evaluate to true for this arm to be chosen.
-let contains x xs =
-    let mutable eol = false
-    let mutable found = false
-    let mutable current = xs
-
-    while not found && not eol do
-        match current with
-        | Cons (hd, _) when hd = x -> found <- true
-        | Cons (_, tl) -> current <- tl
-        | Empty -> eol <- true
-
-    found
-
-let mutable xs = Empty
-xs <- add 50 xs
-xs <- add 40 xs
-xs <- add 30 xs
-xs <- add 20 xs
-xs <- add 10 xs
-
-assert (contains 50 xs)
-assert (contains 10 xs)
-assert (not (contains 42 xs))
-
-// Just like recursive functions, recursive types need a way to stop. Otherwise
-// you'll end up with something that goes on forever.
-type MyInfiniteType = Infinity of MyInfiniteType
-// let inf = Infinity (Infinity (Infinity ...))
-
 // You can optionally label the fields within a variant. When you label fields
 // you can specify the fields by name or by position. Unlabeled fields rely
 // solely on position (just like tuples).
@@ -188,16 +171,37 @@ type Expr =
     | Sub of subtrahend: Expr * minuend: Expr
     | Int of atom: int
 
+// Consider the arithmetic expression: 1 + 2 - 3 + 4. We can represent this
+// expression with our data structure above.
+//                 Add
+//                 / \
+//               Sub  4
+//               / \
+//             Add  3
+//             / \
+//            1   2
+let exp =
+    Add(augend = Sub(subtrahend = Add(augend = Int 1, addend = Int 2), minuend = Int 3), addend = Int 4)
+
+// Notice that the example above uses the labels we specified in the declaration
+// of Expr. These labels are optional; they act like positional arguments if you
+// omit them. Here are a few examples:
+//
 // Using the labels; order doesn't matter.
 let sub1 =
-    Sub(minuend = Int 10, subtrahend = Int 20)
+    Sub(minuend = Int(atom = 10), subtrahend = Int(atom = 20))
 
 // Not using the labels; order matters.
 let sub2 = Sub(Int 10, Add(Int 2, Int 3))
 
-// The `function` keyword allows you to omit `match <expression> with` when
-// doing case analysis in a function with a single argument. This is syntactic
-// sugar for the equivalent match expression:
+// Below, we define a function, eval, that evaluates an Expr. It does this by
+// recursively evaluating each nested Expr until it reaches an atomic value.
+// Don't worry about the recursion too much right now. We'll go into that more
+// in depth later.
+//
+// Note: The `function` keyword allows you to omit `match <expression> with`
+// when doing case analysis in a function with a single argument. This is
+// syntactic sugar for the equivalent match expression:
 //     let rec eval expr =
 //         match expr with
 //         | ...
@@ -207,8 +211,36 @@ let rec eval =
     | Sub (subtrahend, minuend) -> eval subtrahend - eval minuend
     | Int atom -> atom
 
-assert (eval sub1 = 10)
-assert (eval sub2 = 5)
+// Evaluating the expression, exp, we defined above looks like this.
+//
+// eval exp
+//
+// 1.
+//                 Add
+//                 / \
+//               Sub  4
+//               / \
+//             Add  3
+//             / \
+//            1   2
+// 2.
+//                 Add
+//                 / \
+//               Sub  4
+//               / \
+//              3   3
+// 3.
+//                 Add
+//                 / \
+//                0   4
+// 4.
+//                  4
+assert (eval exp = 4)
+
+// Just like recursive functions, recursive types need a way to stop. Otherwise
+// you'll end up with something that goes on forever.
+type MyInfiniteType = Infinity of MyInfiniteType
+// let inf = Infinity (Infinity (Infinity ...))
 
 [<EntryPoint>]
 let main _ = 0
