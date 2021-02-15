@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>_04</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ListOps.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+</Project>
