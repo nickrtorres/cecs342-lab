@@ -16,6 +16,7 @@ let main argv =
         check [[]] (suffixes []) "suffixes []"
         check [[1; 2; 3]; [2; 3]; [3]; []] (suffixes [1; 2; 3]) "suffixes [1; 2; 3]"
         check [[1; 2; 3; 4]; [2; 3; 4]; [3; 4]; [4]; []] (suffixes [1; 2; 3; 4]) "suffixes [1; 2; 3; 4]"
+        printfn "All tests passed."
         0
     with CheckFailedException e ->
         eprintfn "%s" e
