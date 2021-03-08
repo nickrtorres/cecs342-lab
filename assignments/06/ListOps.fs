@@ -26,9 +26,9 @@ let totalOverdrawn name customers =
         | { Name = _; Account = Overdrawn n } -> n
         | _ -> 0
 
-    if List.isEmpty customers then
-        0
-    else
+    match customers with
+    | [] -> 0
+    | _ ->
         List.filter (fun e -> e.Name = name) customers
         |> List.map netOverdrawn
         |> List.reduce (+)
