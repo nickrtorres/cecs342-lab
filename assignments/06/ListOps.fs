@@ -7,7 +7,7 @@ type Account =
 
 type Customer = { Name: string; Account: Account }
 
-let makeCustomerWithBalance name (amount: int) =
+let makeCustomerWithBalance name amount =
     let account =
         if amount > 0 then
             Balance amount
